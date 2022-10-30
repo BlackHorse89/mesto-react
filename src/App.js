@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Header from './components/Header.js';
 import Main from './components/Main.js';
 import Footer from './components/Footer.js';
-import PopupWithForm from './components/PopupWithForm.js';
 import ImagePopup from './components/ImagePopup.js';
 import api from './utils/Api.js';
 import { CurrentUserContext } from './contexts/CurrentUserContext.js';
@@ -68,6 +67,15 @@ function App() {
       .catch(err => console.log(`Данные о ползователе не отправляються. ${err}`))
   }
 
+  function handleUpdateAvatar(data) {
+    api.patchAvatar(data)
+      .then(res => {
+        setCurrentUser(res);
+        closeAllPopups();
+      })
+      .catch(err => console.log(`Аватар не отпровляесться. ${err}`))
+  }
+
   function handleAddPlaceSubmit(data) {
     api.postNewCard(data)
       .then(res => {
@@ -119,7 +127,8 @@ function App() {
         
         <EditAvatarPopup 
           isOpen={isEditAvatarPopupOpen} 
-          onClose={closeAllPopups} />
+          onClose={closeAllPopups} 
+          onUpdateAvatar={handleUpdateAvatar} />
 
         <div className="popup popup_confirm">
           <div className="popup__container popup__container-confirm">
