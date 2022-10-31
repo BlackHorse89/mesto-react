@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PopupWithForm from "./PopupWithForm.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function AddPlacePopup({isOpen, onClose, onAddPlace}) {
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   const [place, setPlace] = useState('');
   const [link, setLink] = useState('');
 
   useEffect (() => {
-    setPlace(currentUser.place);
-    setLink(currentUser.link);
-  }, [currentUser])
+    setPlace('');
+    setLink('');
+  }, [currentUser, isOpen])
 
   function handleChange(e) {
     setPlace(e.target.value)

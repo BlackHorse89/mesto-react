@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Header from './components/Header.js';
-import Main from './components/Main.js';
-import Footer from './components/Footer.js';
-import ImagePopup from './components/ImagePopup.js';
-import api from './utils/Api.js';
-import { CurrentUserContext } from './contexts/CurrentUserContext.js';
-import EditProfilePopup from './components/EditProfilePopup.js';
-import EditAvatarPopup from './components/EditAvatarPopup.js';
-import AddPlacePopup from './components/AddPlacePopup.js';
-
+import Header from './Header.js';
+import Main from './Main.js';
+import Footer from './Footer.js';
+import ImagePopup from './ImagePopup.js';
+import api from '../utils/Api.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -48,7 +47,8 @@ function App() {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    })
+    .catch(err => console.log(`Изменения лайка не произошло! ${err}`))
   }
 
   function handleCardDelete(card) {
@@ -56,6 +56,7 @@ function App() {
       setCards(cards.filter((prevCard) => prevCard._id !== card._id));
       setCurrentCardDelete(card);
     })
+    .catch(err => console.log(`Не получилось удалить карточку. ${err}`))
   }
 
   function handleSubmit(data) {
@@ -103,7 +104,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
+      <div className="App">
         <Header />
         <Main
           onEditAvatar = {handleEditAvatarClick}
